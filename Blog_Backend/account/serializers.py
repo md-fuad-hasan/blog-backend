@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Account, AccountDetail
 
 from django.contrib.auth.hashers import check_password
-from django.conf import settings
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
