@@ -44,3 +44,16 @@ class Account(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+def profile_pic_uploaded(instance,filename):
+    return 'uploads\{user}\{filename}'.format(user=instance.user.username,filename=filename)
+
+class AccountDetail(models.Model):
+    user = models.OneToOneField(Account,on_delete=models.CASCADE)
+    firstname = models.CharField(max_length=50,null=True,blank=True)
+    lastname = models.CharField(max_length=50,null=True,blank=True)
+    propfile_pic = models.ImageField(upload_to=profile_pic_uploaded, blank=True, null=True)
+
+
+    def __str__(self):
+        return self.firstname
