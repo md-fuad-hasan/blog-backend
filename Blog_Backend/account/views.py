@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .models import Account, AccountDetail
 from .serializers import AccountSerializer, AccountDetailSerializer,LoginSerializer
 # from django.contrib.auth import authenticate
+from django.contrib.auth.models import update_last_login 
+
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -32,9 +34,10 @@ class LoginView(APIView):
             if user is None:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+            update_last_login(None, user)
             refresh = RefreshToken.for_user(user)
             return Response({
+                'username': user.username,
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
             })
