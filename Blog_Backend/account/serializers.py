@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Account, AccountDetail
+from .models import Account,AccountDetail
+
 
 from django.contrib.auth.hashers import check_password
 
@@ -22,7 +23,7 @@ class AccountSerializer(serializers.ModelSerializer):
 class AccountDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountDetail
-        exclude = ['id']
+        fields = '__all__'
 
 
 class LoginSerializer(serializers.Serializer):
