@@ -27,7 +27,6 @@ class Blog(models.Model):
         return self.blog_title
 
 
-@receiver(post_delete, sender=Blog)
 def pre_save_receiver(sender,instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify(instance.blog_title)+"-"+str(uuid.uuid4())
