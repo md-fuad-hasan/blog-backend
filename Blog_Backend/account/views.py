@@ -10,8 +10,8 @@ from .serializers import (
 # from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
 from rest_framework.permissions import IsAuthenticated
-# from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -25,8 +25,8 @@ class AccountView(generics.CreateAPIView):
 
 class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AccountDetailSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+
 
     def get_object(self, *args, **kwargs):
         kwargs = self.kwargs
