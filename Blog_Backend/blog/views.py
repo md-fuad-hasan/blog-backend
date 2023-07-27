@@ -36,3 +36,9 @@ class PersonalBlogListAPIView(generics.ListAPIView):
             queryset = Blog.objects.filter(author=id)
 
         return queryset
+
+class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BlogCreateSerializer
+    queryset = Blog.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'slug'
