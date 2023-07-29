@@ -27,7 +27,7 @@ class Blog(models.Model):
         return self.blog_title
 
 
+
 def pre_save_receiver(sender,instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = slugify(instance.blog_title)+"-"+str(uuid.uuid4())
+    instance.slug = slugify(instance.blog_title)+"-"+str(uuid.uuid4())
 pre_save.connect(pre_save_receiver, sender=Blog)

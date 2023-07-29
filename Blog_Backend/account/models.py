@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # Create your models here.
 
 class AccountManager(BaseUserManager):
@@ -49,10 +52,20 @@ def profile_pic_uploaded(instance,filename):
     return 'uploads\{user}\{filename}'.format(user=instance.user.username,filename=filename)
 
 class AccountDetail(models.Model):
-    user = models.OneToOneField(Account,on_delete=models.CASCADE)
+    user = models.OneToOneField(Account,on_delete=models.CASCADE,related_name='account')
     bio = models.CharField(max_length=100, null=True, blank=True)
     fullname = models.CharField(max_length=50,null=True,blank=True)
     profile_pic = models.ImageField(upload_to=profile_pic_uploaded, blank=True, null=True)
 
     def __str__(self):
-        return self.fullname
+        return self.user.username
+
+
+@receiver(post_save, sender=Account)
+def create_account_detail(sender, instance, created, **kwargs):
+    if created:
+        AccountDetail.objects.create(user = instance)
+
+@receiver(post_save, sender=Account)
+def save_account_detail(sender, instance, **kwargs):
+    instance.account.save()
